@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import React from 'react';
 import { keyframes } from '@emotion/react';
 
 const StyledSpinnerWrapper = styled.div({

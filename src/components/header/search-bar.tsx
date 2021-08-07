@@ -1,10 +1,16 @@
+import { SyntheticEvent, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
+import qs from 'qs';
+import { useDispatch } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+
+import { fetchVideos } from '../../store/reducers';
 import SearchIcon from './search-icon.png';
 
-const StyledWrapper = styled.div({
+const StyledWrapper = styled.form({
     display: 'flex',
     position: 'relative',
-    width: '80%'
+    width: '100%'
 });
 
 const StyledInput = styled.input({
@@ -26,10 +32,35 @@ const StyledSearchIcon = styled.img({
     height: 15
 });
 const SearchBar = () => {
+    const [query, setQuery] = useState<string>('');
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const location = useLocation();
+
+    useEffect(() => {
+        const params = qs.parse(location.search, { ignoreQueryPrefix: true });
+        const searchQuery = params?.query || '';
+        console.log(searchQuery);
+        // @ts-ignore
+        setQuery(searchQuery);
+    }, [location.search]);
+
+    const handleSubmit = (e: SyntheticEvent) => {
+        e.preventDefault();
+        dispatch(fetchVideos(query));
+        history.push(`/search?query=${query}`);
+    };
+
     return (
-        <StyledWrapper>
-            <StyledInput type="text" placeholder="Search" />
-            <StyledSearchBtn>
+        <StyledWrapper onSubmit={handleSubmit}>
+            <StyledInput
+                type="text"
+                name="searchBar"
+                placeholder="Search"
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+            />
+            <StyledSearchBtn type="submit">
                 <StyledSearchIcon src={SearchIcon} />
             </StyledSearchBtn>
         </StyledWrapper>

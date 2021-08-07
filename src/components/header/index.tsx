@@ -1,8 +1,19 @@
 import styled from '@emotion/styled';
-import React from 'react';
+
 import SearchBar from './search-bar';
 import YoutubeLogo from './youtube-logo.png';
 import * as Colors from '../../styles/colors';
+
+const StyledWrapper = styled.div({
+    position: 'sticky',
+    top: 0,
+    borderBottom: `1px solid ${Colors.darkGrey}`,
+    background: Colors.white,
+    paddingTop: 10,
+    '@media (max-width: 768px)': {
+        position: 'relative'
+    }
+});
 
 const StyledHeader = styled.div({
     display: 'flex',
@@ -25,12 +36,12 @@ const StyledLogo = styled.img({
 });
 const Header = () => {
     return (
-        <div style={{ borderBottom: `1px solid ${Colors.darkGrey}` }}>
+        <StyledWrapper>
             <StyledHeader>
                 <StyledLogo src={YoutubeLogo} alt="log" />
                 <SearchBar />
             </StyledHeader>
-        </div>
+        </StyledWrapper>
     );
 };
 
